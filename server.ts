@@ -20,7 +20,7 @@ let damagedSystem: string | null = null;
 app.get('/status', (_: Request, res: Response) => {
   const systemKeys = Object.keys(systems);
   damagedSystem = systemKeys[Math.floor(Math.random() * systemKeys.length)];
-  res.json({ damage_system: damagedSystem });
+  res.json({ damaged_system: damagedSystem });
 });
 
 //** @api {get} /repair-bay Repair the damaged system */
