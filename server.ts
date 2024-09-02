@@ -1,11 +1,14 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
 
+import { getSpecificVolumes } from './robotPressure';
+
 const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(cors());
 
+// e7
 const systems: Record<string, string> = {
   navigation: 'NAV-01',
   communications: 'COM-02',
@@ -44,9 +47,24 @@ app.get('/repair-bay', (_: Request, res: Response) => {
   res.send(htmlCont);
 });
 
-//** @api {post} /teapot/ I'm a teapot */
+//** @api {post} /teapot I'm a teapot */
 app.post('/teapot', (_: Request, res: Response) => {
   res.sendStatus(418);
+});
+
+// e9
+//** @api {get} /phase-change-diagram Change diagram repair / */
+app.get('/phase-change-diagram', (req: Request, res: Response) => {
+  const pressure = req.query.pressure;
+  const dataVolumen = getSpecificVolumes(Number(pressure));
+
+  if (!dataVolumen) {
+    return res
+      .status(400)
+      .send({ error: 'Invalid or missing pressure parameter' });
+  }
+
+  res.json(dataVolumen);
 });
 
 //** managing other endpoints */
