@@ -64,6 +64,8 @@ app.get('/phase-change-diagram', (req: Request, res: Response) => {
       .send({ error: 'Invalid or missing pressure parameter' });
   }
 
+  console.log(pressure);
+
   res.json(dataVolumen);
 });
 
