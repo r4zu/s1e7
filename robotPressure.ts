@@ -118,13 +118,13 @@ const data: IData[] = [
 ];
 
 const interpolate = (
-  x: number,
-  x0: number,
-  y0: number,
-  x1: number,
-  y1: number
+  pressure: number,
+  p1: number,
+  p2: number,
+  v1: number,
+  v2: number
 ) => {
-  return y0 + ((x - x0) * (y1 - y0)) / (x1 - x0);
+  return v1 + ((pressure - p1) * (v2 - v1)) / (p2 - p1);
 };
 
 export const getSpecificVolumes = (pressure: number) => {
@@ -136,15 +136,15 @@ export const getSpecificVolumes = (pressure: number) => {
       const specificVolumeLiquid = interpolate(
         pressure,
         point1.pressure,
-        point1.specific_volume_liquid,
         point2.pressure,
+        point1.specific_volume_liquid,
         point2.specific_volume_liquid
       );
       const specificVolumeVapor = interpolate(
         pressure,
         point1.pressure,
-        point1.specific_volume_vapor,
         point2.pressure,
+        point1.specific_volume_vapor,
         point2.specific_volume_vapor
       );
 
@@ -156,7 +156,6 @@ export const getSpecificVolumes = (pressure: number) => {
   }
 
   return {
-    specific_volume_liquid: 0,
-    specific_volume_vapor: 0,
+    error: `No data available for pressure ${pressure} MPa`,
   };
 };
